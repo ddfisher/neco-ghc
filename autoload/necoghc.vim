@@ -211,7 +211,8 @@ function! s:ghc_mod_caching_browse(mod) "{{{
     let l:cmd += ['-d']
   endif
   let l:cmd += [a:mod]
-  for l:line in s:ghc_mod(l:cmd)
+  let l:out = ghcmodi#call_exact(expand("%:p"), 'browse ' . a:mod)
+  for l:line in split(l:out, "\n")
     let l:m = matchlist(l:line, '^\(class\|data\|type\|newtype\) \(\S\+\)\( .\+\)\?$')
     if !empty(l:m)
       let l:dict[l:m[2]] = {'kind': l:m[1], 'args': l:m[3][1 :]}
